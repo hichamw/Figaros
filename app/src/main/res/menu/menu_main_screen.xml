@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainScreen">
+    <item android:id="@+id/figaros_maps"
+        android:title="@string/maps"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+    />
+    <item android:id="@+id/figaros_home"
+        android:title="@string/home"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+    />
+
+
+    <item android:id="@+id/figaros_appointments"
+        android:title="@string/appointment"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+    />
+
+</menu>
