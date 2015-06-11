@@ -12,7 +12,8 @@
         android:text="@string/home"
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:gravity="left"/>
 
     <ImageButton
         android:layout_width="120dp"
