@@ -1,18 +1,17 @@
 package myandroidapps.figaros;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,28 +19,27 @@ import java.util.List;
 public class SearchActivity extends BaseActivity {
 
 
-    private List<StoreItemInfo> storeList = new ArrayList<StoreItemInfo>();
+    private List<StoreItemInfo> storeList = new ArrayList<>();
     StoreItemInfo currentItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
-        populateStoreList();
+        try {
+            retrieveFromDB();
+        } catch (SQLException e){
+            Log.w("DB fail", "Database dun goofd");
+            e.printStackTrace();
+        }
         populateStoreListView();
         processItemClick();
+
     }
 
-    private void populateStoreList() {
-        storeList.add(new StoreItemInfo("Booms salon", "Schubertlaan 79", "3055 HN Rotterdam", R.drawable.ic_photo));
-        storeList.add(new StoreItemInfo("Kapsalon Pino & Co", "Pannekoekstraat 20a", "3011 LG  Rotterdam", R.drawable.ic_photo));
-        storeList.add(new StoreItemInfo("Kapsalon Kapperazzi", "Hof van Spaland 20a", "3121 CB  Schiedam", R.drawable.ic_photo));
-        storeList.add(new StoreItemInfo("Christiaan Lifestyle Salon", "Nieuwe Binnenweg 66", "3015 BB  Rotterdam", R.drawable.ic_photo));
-        storeList.add(new StoreItemInfo("WOW Kappers", "Corsicalaan 29", "3059 XX  Rotterdam", R.drawable.ic_photo));
-        storeList.add(new StoreItemInfo("Team Kapsalon", "Zuidplein Hoog 426", "3083 BL  Rotterdam", R.drawable.ic_photo));
-        storeList.add(new StoreItemInfo("Kapsalon All-Inn", "Strevelsweg 79", "3073 DV  Rotterdam", R.drawable.ic_photo));
-        storeList.add(new StoreItemInfo("Salt & Pepper Kappers", "Straatweg 55s", "3051 BD  Rotterdam", R.drawable.ic_photo));
+    private void retrieveFromDB() throws SQLException {
+        MySQLConnector sql = new MySQLConnector();
+        storeList = sql.retrieveSearchPage();
     }
 
     private void populateStoreListView() {
@@ -89,7 +87,7 @@ public class SearchActivity extends BaseActivity {
             ImageView storePhoto = (ImageView) storeItemView.findViewById(R.id.imgStore);
             storePhoto.setImageResource(currentItem.getStorePhoto());
 
-            final ImageButton favBtn = (ImageButton) storeItemView.findViewById(R.id.btnFavorite);
+            /*final ImageButton favBtn = (ImageButton) storeItemView.findViewById(R.id.btnFavorite);
             favBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) { // here probably something went wrong
@@ -100,7 +98,7 @@ public class SearchActivity extends BaseActivity {
                     addFavorite.putExtra("dataObject", storeList.get(position)); // Here i send a
                     startActivity(addFavorite);
                 }
-            });
+            }); */
 
 
 
