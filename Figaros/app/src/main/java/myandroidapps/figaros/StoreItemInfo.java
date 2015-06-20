@@ -13,12 +13,14 @@ public class StoreItemInfo extends BaseActivity implements Serializable {
     private String storeAddress;
     private String storeCity;
     private int storePhoto;
+    private String objID;
 
-    public StoreItemInfo(String storeName, String storeAddress, String storeCity, int storePhoto) {
+    public StoreItemInfo(String storeName, String storeAddress, String storeCity, int storePhoto, String objID) {
         this.storeName = storeName;
         this.storeAddress = storeAddress;
         this.storeCity = storeCity;
         this.storePhoto = storePhoto;
+        this.objID = objID;
 
     }
 
@@ -36,5 +38,9 @@ public class StoreItemInfo extends BaseActivity implements Serializable {
 
     public int getStorePhoto() {
         return storePhoto;
+    }
+
+    public String getObjID() {
+        return objID;
     }
 }

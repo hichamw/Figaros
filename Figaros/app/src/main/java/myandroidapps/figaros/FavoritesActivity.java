@@ -11,6 +11,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.parse.FindCallback;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.SaveCallback;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +30,37 @@ public class FavoritesActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
-        processIntent();
+        retrieveFromDB();
     }
 
-    private void processIntent() {
+
+    public void retrieveFromDB() {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Barber");
+        query.addDescendingOrder("Barber");
+        query.whereEqualTo("favorite", 1);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
+                if (e == null) {
+                    for (ParseObject parsedObject: parseObjects) {
+                        String name = parsedObject.getString("name");
+                        String address = parsedObject.getString("address");
+                        String city = parsedObject.getString("city");
+                        int photo = R.drawable.ic_photo;
+                        String objID = parsedObject.getObjectId();
+                        StoreItemInfo sii = new StoreItemInfo(name, address, city, photo, objID);
+                        favoriteList.add(sii);
+                    }
+                } else {
+                    e.printStackTrace();
+                }
+                populateStoreListView();
+
+            }
+        });
+
+    }
+    /*private void processIntent() {
         Intent intent = getIntent();
         Log.w("fav", "1");
         Log.w("fav", "2");
@@ -51,10 +84,14 @@ public class FavoritesActivity extends BaseActivity {
         addIntent(intent);
 
     }
+    */
 
     private void populateStoreListView() {
+        Log.d("TEST", "1");
         adapter = new StoreListAdapter();
+        Log.d("TEST", "2");
         ListView storeMenuList = (ListView) findViewById(R.id.favoriteListView);
+        Log.d("TEST", "3");
         storeMenuList.setAdapter(adapter);
     }
 
@@ -88,10 +125,24 @@ public class FavoritesActivity extends BaseActivity {
                 favBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String message = "Favorite deleted";
-                        Toast.makeText(FavoritesActivity.this, message, Toast.LENGTH_SHORT).show();
-                        StoreItemInfo itemRemove = getItem(position);
-                        remove(itemRemove);
+                        StoreItemInfo selectedItem = favoriteList.get(position);
+                        String objID = selectedItem.getObjID();
+                        Log.d("CURRENTITEM ID", objID);
+                        Log.d("CURRENTITEM NAME", selectedItem.getStoreName());
+                        ParseObject obj = ParseObject.createWithoutData("Barber", objID);
+
+                        obj.put("favorite", 0);
+
+                        obj.saveInBackground(new SaveCallback() {
+                            public void done(com.parse.ParseException e) {
+                                if (e == null) {
+                                    Toast.makeText(FavoritesActivity.this, "Verwijderd", Toast.LENGTH_SHORT);
+                                } else {
+                                    // The save failed.
+                                }
+                            }
+                        });
+                        remove(selectedItem);
                     }
                 });
             }

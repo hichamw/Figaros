@@ -13,6 +13,7 @@
     <string name="txtStoreName">Name</string>
     <string name="txtStoreAddress">Address</string>
     <string name="txtStoreCity">City</string>
+    <string name="title_activity_barber_page">BarberPageActivity</string>
 
 
 
