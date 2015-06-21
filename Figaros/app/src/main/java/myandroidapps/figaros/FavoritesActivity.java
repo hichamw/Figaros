@@ -136,13 +136,14 @@ public class FavoritesActivity extends BaseActivity {
                         obj.saveInBackground(new SaveCallback() {
                             public void done(com.parse.ParseException e) {
                                 if (e == null) {
-                                    Toast.makeText(FavoritesActivity.this, "Verwijderd", Toast.LENGTH_SHORT);
+                                    Toast.makeText(FavoritesActivity.this, "Verwijderd", Toast.LENGTH_SHORT).show();
                                 } else {
                                     // The save failed.
                                 }
                             }
                         });
                         remove(selectedItem);
+
                     }
                 });
             }

@@ -1,17 +1,40 @@
 package myandroidapps.figaros;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 
-public class BarberPageActivity extends ActionBarActivity {
+public class BarberPageActivity extends BaseActivity {
+
+
+    List<StoreItemInfo> storeList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barber_page);
+        Intent bpIntent = this.getIntent();
+        StoreItemInfo currentItem = (StoreItemInfo) bpIntent.getSerializableExtra("storeItem");
+        TextView nameTxt = (TextView) findViewById(R.id.txtBname);
+        nameTxt.setText(currentItem.getStoreName());
+
+        TextView addressTxt = (TextView) findViewById(R.id.txtBaddress);
+        addressTxt.setText(currentItem.getStoreAddress());
+
+        TextView cityTxt = (TextView) findViewById(R.id.txtBcity);
+        cityTxt.setText(currentItem.getStoreCity());
     }
 
 

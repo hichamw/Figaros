@@ -85,8 +85,9 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 StoreItemInfo currentItem = storeList.get(position);
-                String message = "You have pressed " + currentItem.getStoreName();
-                Toast.makeText(SearchActivity.this, message, Toast.LENGTH_SHORT).show();
+                Intent bpIntent = new Intent(getApplicationContext(), BarberPageActivity.class);
+                bpIntent.putExtra("storeItem", currentItem);
+                startActivity(bpIntent);
             }
         });
     }
@@ -134,12 +135,13 @@ public class SearchActivity extends BaseActivity {
                     obj.saveInBackground(new SaveCallback() {
                         public void done(com.parse.ParseException e) {
                             if (e == null) {
-                                Toast.makeText(SearchActivity.this, "Opgeslagen", Toast.LENGTH_SHORT);
+                                Toast.makeText(SearchActivity.this, "Opgeslagen", Toast.LENGTH_SHORT).show();
                             } else {
                                 // The save failed.
                             }
                         }
                     });
+
                 }
             });
             final ImageButton callBtn = (ImageButton) storeItemView.findViewById(R.id.btnCall);
@@ -169,6 +171,10 @@ public class SearchActivity extends BaseActivity {
 
             return storeItemView;
         }
+    }
+
+    public List<StoreItemInfo> getSiiList() {
+        return storeList;
     }
 
 
